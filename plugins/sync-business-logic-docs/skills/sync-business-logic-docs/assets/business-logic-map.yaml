@@ -1,0 +1,12 @@
+version: 1
+
+subsystems:
+  Order:
+    source:
+      - src/Order/**/*.cs
+    document: docs/business/order.md
+
+  Payment:
+    source:
+      - src/Payment/**/*.cs
+    document: docs/business/payment.md

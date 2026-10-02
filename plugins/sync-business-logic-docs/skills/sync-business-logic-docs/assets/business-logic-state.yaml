@@ -1,0 +1,10 @@
+version: 1
+
+documents:
+  docs/business/order.md:
+    last_processed_commit: "REPLACE_WITH_COMMIT_SHA"
+    last_full_audit_commit: "REPLACE_WITH_COMMIT_SHA"
+
+  docs/business/payment.md:
+    last_processed_commit: "REPLACE_WITH_COMMIT_SHA"
+    last_full_audit_commit: "REPLACE_WITH_COMMIT_SHA"

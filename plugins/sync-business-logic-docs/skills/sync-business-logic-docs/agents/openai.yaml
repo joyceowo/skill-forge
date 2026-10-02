@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sync Business Logic Docs"
+  short_description: "Audit C# business logic with bilingual terminology"
+  default_prompt: "Use $sync-business-logic-docs to audit rule-level coverage and synchronize C# business logic into primary-language Markdown with bilingual mappings only for established terms."

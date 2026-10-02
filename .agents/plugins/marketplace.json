@@ -1,0 +1,20 @@
+{
+  "name": "personal",
+  "interface": {
+    "displayName": "Skill Forge"
+  },
+  "plugins": [
+    {
+      "name": "sync-business-logic-docs",
+      "source": {
+        "source": "local",
+        "path": "./plugins/sync-business-logic-docs"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

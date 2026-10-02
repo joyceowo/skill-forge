@@ -1,0 +1,23 @@
+{
+  "name": "sync-business-logic-docs",
+  "version": "1.0.0",
+  "description": "Audit and synchronize business-logic documentation from C# source code and Git history.",
+  "author": {
+    "name": "Skill Forge"
+  },
+  "skills": "./skills/",
+  "keywords": ["csharp", "business-logic", "documentation", "git", "coverage-audit"],
+  "interface": {
+    "displayName": "Sync Business Logic Docs",
+    "shortDescription": "從 C# 程式碼稽核並同步業務邏輯文件",
+    "longDescription": "分析 C# 原始碼與 Git 歷史，建立完整的業務規則覆蓋基準，再依提交差異增量更新 Markdown 文件。保留文件主要語言，僅為既有領域名詞補充中英對照，並分別追蹤文件同步與完整稽核檢查點。",
+    "developerName": "Skill Forge",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "使用 sync-business-logic-docs，從 C# 原始碼建立業務邏輯文件與完整稽核基準。",
+      "使用 sync-business-logic-docs，依 Git 變更增量同步業務文件。",
+      "使用 sync-business-logic-docs，稽核既有業務文件是否遺漏規則與分支。"
+    ]
+  }
+}
