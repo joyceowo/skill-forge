@@ -6,12 +6,15 @@
     "name": "Skill Forge"
   },
   "skills": "./skills/",
+  "repository": "https://github.com/joyceowo/skill-forge",
+  "homepage": "https://github.com/joyceowo/skill-forge/tree/main/plugins/sync-business-logic-docs",
   "keywords": ["csharp", "business-logic", "documentation", "git", "coverage-audit"],
   "interface": {
     "displayName": "Sync Business Logic Docs",
     "shortDescription": "從 C# 程式碼稽核並同步業務邏輯文件",
     "longDescription": "分析 C# 原始碼與 Git 歷史，建立完整的業務規則覆蓋基準，再依提交差異增量更新 Markdown 文件。保留文件主要語言，僅為既有領域名詞補充中英對照，並分別追蹤文件同步與完整稽核檢查點。",
     "developerName": "Skill Forge",
+    "websiteURL": "https://github.com/joyceowo/skill-forge",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
     "defaultPrompt": [

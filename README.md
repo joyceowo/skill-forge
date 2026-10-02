@@ -1,8 +1,8 @@
 # Skill Forge
 
-可加入 Codex 的技能市集。技能以外掛（plugin）為安裝單位，每個外掛包含自己的 `SKILL.md`、參考文件及資源。
+透過 GitHub 安裝到 Codex 的技能市集。技能以外掛（plugin）為安裝單位，每個外掛包含自己的 `SKILL.md`、參考文件及資源。
 
-市集顯示名稱為 **Skill Forge**；市集識別碼沿用建立工具的預設值 `personal`。來源路徑相對於專案根目錄，因此可將整個專案放入 Git 後分享。
+GitHub 儲存庫：[joyceowo/skill-forge](https://github.com/joyceowo/skill-forge)。市集顯示名稱為 **Skill Forge**，識別碼為 `skill-forge`。
 
 ## 已收錄的技能
 
@@ -10,25 +10,18 @@
 | --- | --- | --- |
 | [sync-business-logic-docs](plugins/sync-business-logic-docs/README.md) | 1.0.0 | 從 C# 與 Git 歷史建立、稽核及增量同步業務邏輯 Markdown 文件。 |
 
-## 加入 Codex
+## 從 GitHub 安裝
 
 需要支援 `codex plugin` 的 Codex CLI。本專案建立時以 `codex-cli 0.160.0` 檢查指令格式。
 
-在本專案根目錄執行：
+在任何目錄執行以下指令，不必先手動複製本專案：
 
 ```powershell
-codex plugin marketplace add .
-codex plugin add sync-business-logic-docs@personal
+codex plugin marketplace add https://github.com/joyceowo/skill-forge.git --ref main
+codex plugin add sync-business-logic-docs@skill-forge
 ```
 
-也可以在任何位置指定完整路徑：
-
-```powershell
-codex plugin marketplace add 'C:\Joyce\Git\vscode\skill-forge'
-codex plugin add sync-business-logic-docs@personal
-```
-
-第一個指令登錄本機市集，第二個指令安裝外掛。若另一台電腦已有不同的 `personal` 市集，先為這份尚未登錄的副本設定不衝突的市集 `name`，並相應調整安裝指令的 `@personal`；不要覆蓋既有市集。
+第一個指令從 GitHub 的 `main` 分支取得並登錄市集，第二個指令安裝其中的技能外掛。若儲存庫為私人儲存庫，使用者需具備 GitHub 存取權，並先設定 Git 驗證。
 
 安裝後在 Codex 開啟新聊天，於技能選單搜尋 **Sync Business Logic Docs**，或輸入：
 
@@ -42,6 +35,15 @@ codex plugin add sync-business-logic-docs@personal
 codex plugin marketplace list
 codex plugin list
 ```
+
+## 更新已安裝的技能
+
+```powershell
+codex plugin marketplace upgrade skill-forge
+codex plugin add sync-business-logic-docs@skill-forge
+```
+
+先更新 GitHub 市集快照，再安裝該快照中的外掛版本，最後開啟新聊天。
 
 ## 目錄結構
 
@@ -64,15 +66,15 @@ skill-forge/
                 └── examples.md
 ```
 
-市集中的 `source.path`（例如 `./plugins/sync-business-logic-docs`）相對於專案根目錄，而非 `.agents/plugins/`。
+市集中的 `source.path`（例如 `./plugins/sync-business-logic-docs`）相對於儲存庫根目錄，而非 `.agents/plugins/`。項目的 `source.source: "local"` 表示外掛位於下載的儲存庫內；整個市集仍由上述 GitHub URL 安裝與更新。
 
 ## 維護與擴充
 
 1. 新增 `plugins/<外掛名稱>/.codex-plugin/plugin.json`，並將技能放入該外掛的 `skills/<技能名稱>/SKILL.md`。
 2. 在市集的 `plugins` 陣列尾端加入對應外掛，保留 `source`、`policy.installation`、`policy.authentication` 與 `category`。
 3. 檢查外掛名稱、資料夾名稱與來源路徑一致，所有參考文件與資源均位於套件內。
-4. 修改已安裝的外掛時，使用 Codex `plugin-creator` 的 `update_plugin_cachebuster.py` 為來源套件產生版本快取識別碼，再重新執行 `codex plugin add <外掛名稱>@personal`，並以新聊天載入。
+4. 發布外掛更新時，更新 `.codex-plugin/plugin.json` 中的版本，將變更提交並推送到 GitHub 的 `main` 分支，再依上方更新指令驗證安裝。
 
 請編輯此專案中的來源檔案；Codex 的安裝快取由安裝指令管理。這份技能目前是原始技能的完整副本，不會自動與個人技能目錄雙向同步。
 
-本機使用不需要 Git 遠端。未來若要透過 Git 分享，將整個專案推送到自己的儲存庫，再以實際儲存庫來源執行 `codex plugin marketplace add`。
+分享市集時提供本儲存庫的 GitHub 連結與上方兩個安裝指令即可。
