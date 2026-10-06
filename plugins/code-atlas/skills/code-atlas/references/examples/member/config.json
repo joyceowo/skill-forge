@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "projectRoot": "..",
+  "language": "zh-Hant",
+  "parts": [
+    {
+      "name": "web",
+      "path": "web",
+      "kind": "frontend",
+      "framework": "react",
+      "apiPrefix": "",
+      "pageDirs": ["web/src/pages"]
+    },
+    {
+      "name": "api",
+      "path": "api",
+      "kind": "backend",
+      "framework": "aspnetcore"
+    }
+  ],
+  "exclude": ["**/.env*", "**/*secrets*", "**/*.pfx", "**/Migrations/**", "**/*.Tests/**"]
+}

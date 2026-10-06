@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Atlas"
+  short_description: "Map Git projects into business logic and zoomable atlases"
+  default_prompt: "使用 $code-atlas 分析這個 Git 專案或多 Git 工作區，建立商業邏輯文件並交付可匯入的地圖 ZIP 與 viewer。"

@@ -1,0 +1,45 @@
+{
+  "id": "member.level",
+  "name": "會員等級",
+  "summary": "定義會員等級與各等級的權益，並由每日排程 `TierEvaluationJob` 依近 12 個月的消費金額重新評定等級。等級定義集中在 `TierPolicy`，評定結果寫入 `Members.TierId`。點數系統依等級決定回饋倍率，所以等級規則改動時要一併確認點數的計算結果。會員可以在「會員等級」頁查看目前等級和權益。",
+  "data": ["Members", "MemberTiers"],
+  "dependsOn": [],
+  "towns": [
+    {
+      "id": "member.level.benefits",
+      "name": "等級權益",
+      "type": "rule",
+      "summary": "會員在「會員等級」頁查看目前等級及對應權益，包括點數回饋倍率、免運門檻與生日贈點。",
+      "residents": [
+        {
+          "name": "一般會員",
+          "rules": ["註冊完成即為一般會員", "點數回饋倍率 1 倍", "生日當月贈送 100 點"],
+          "evidence": [{ "file": "api/Member/Level/TierPolicy.cs", "symbol": "TierPolicy.Regular", "role": "logic" }]
+        },
+        {
+          "name": "VIP",
+          "rules": ["點數回饋倍率 2 倍", "免運門檻降為 0 元", "生日當月贈送 500 點"],
+          "evidence": [{ "file": "api/Member/Level/TierPolicy.cs", "symbol": "TierPolicy.Vip", "role": "logic" }]
+        }
+      ],
+      "screens": ["/member/level"],
+      "endpoints": ["GET /api/member/level"],
+      "evidence": [
+        { "file": "api/Member/Level/TierPolicy.cs", "symbol": "TierPolicy", "role": "logic" },
+        { "file": "api/Member/Level/MemberLevelController.cs", "symbol": "MemberLevelController.Get", "role": "api" },
+        { "file": "web/src/pages/member/MemberLevel.tsx", "symbol": "MemberLevel", "role": "screen" }
+      ]
+    },
+    {
+      "id": "member.level.evaluation",
+      "name": "升降級條件",
+      "type": "job",
+      "summary": "每日排程依會員近 12 個月的有效消費金額與升降級門檻重新評定等級；等級改變時儲存結果並通知會員。",
+      "rules": ["近 12 個月消費滿 30,000 元升為 VIP", "VIP 近 12 個月消費未滿 15,000 元降回一般會員", "每天 02:00 執行", "退貨金額不計入消費"],
+      "evidence": [
+        { "file": "api/Member/Level/TierEvaluationJob.cs", "symbol": "TierEvaluationJob.Execute", "role": "logic" },
+        { "file": "api/Member/Level/TierPolicy.cs", "symbol": "TierPolicy", "role": "logic" }
+      ]
+    }
+  ]
+}

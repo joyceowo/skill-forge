@@ -1,0 +1,12 @@
+{
+  "name": "code-atlas",
+  "version": "1.0.0",
+  "description": "Analyze single or multiple Git repositories into Traditional Chinese business maps and importable atlas ZIPs, and update them from Git changes.",
+  "author": {
+    "name": "Skill Forge"
+  },
+  "skills": "./skills/",
+  "repository": "https://github.com/joyceowo/skill-forge",
+  "homepage": "https://github.com/joyceowo/skill-forge/tree/main/plugins/code-atlas",
+  "keywords": ["code-analysis", "business-logic", "documentation", "git", "atlas"]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "member.points",
+  "name": "點數系統",
+  "summary": "以交易流水 `PointTransactions` 記錄每一次點數異動，`MemberPoints` 只存目前餘額，由流水彙總而來，方便對帳與追查。點數累積在訂單完成事件中處理，扣除在結帳時同步呼叫，到期由每日排程批次處理。回饋倍率依會員等級決定，因此依賴會員等級。折抵比例、上限、有效期限集中在 `PointPolicy`。",
+  "data": ["MemberPoints", "PointTransactions"],
+  "dependsOn": ["member.level"],
+  "towns": [
+    {
+      "id": "member.points.accrue",
+      "name": "點數累積",
+      "type": "job",
+      "summary": "訂單完成時，依訂單金額及會員等級倍率計算點數，向下取整後記錄點數與有效期限；退貨時以負的訂單金額計算點數異動。",
+      "rules": ["每消費 100 元得 1 點，再乘上等級倍率並向下取整", "退貨時以負的訂單金額及當下會員等級倍率計算點數異動"],
+      "evidence": [
+        { "file": "api/Points/OrderCompletedHandler.cs", "symbol": "OrderCompletedHandler.Handle", "role": "logic" },
+        { "file": "api/Points/PointService.cs", "symbol": "PointService.AccrueAsync", "role": "logic" }
+      ],
+      "dependsOn": ["member.level.benefits"]
+    },
+    {
+      "id": "member.points.redeem",
+      "name": "點數扣除",
+      "type": "operation",
+      "summary": "會員在結帳頁選擇用點數折抵，系統先檢查單筆上限，超過時回報錯誤；通過後依到期日由早到晚扣點，逐批記錄扣除的點數。",
+      "rules": ["1 點折抵 1 元", "單筆折抵上限為訂單金額的 30%", "先扣最早到期的點數"],
+      "screens": ["/checkout"],
+      "endpoints": ["POST /api/points/redeem"],
+      "evidence": [
+        { "file": "web/src/pages/checkout/Checkout.tsx", "symbol": "Checkout", "role": "screen" },
+        { "file": "api/Points/PointsController.cs", "symbol": "PointsController.Redeem", "role": "api" },
+        { "file": "api/Points/PointService.cs", "symbol": "PointService.RedeemAsync", "role": "logic" },
+        { "file": "api/Points/PointPolicy.cs", "symbol": "PointPolicy", "role": "config" }
+      ]
+    },
+    {
+      "id": "member.points.expire",
+      "name": "點數到期",
+      "type": "job",
+      "summary": "每日排程找出已到期的點數批次，記錄剩餘點數的扣除，並通知點數即將到期的會員。",
+      "rules": ["點數有效期限為取得日起 12 個月", "每天 03:00 執行", "到期前 30 天寄送提醒"],
+      "evidence": [
+        { "file": "api/Points/PointExpiryJob.cs", "symbol": "PointExpiryJob.Execute", "role": "logic" },
+        { "file": "api/Points/PointPolicy.cs", "symbol": "PointPolicy", "role": "config" }
+      ]
+    },
+    {
+      "id": "member.points.query",
+      "name": "點數查詢",
+      "type": "operation",
+      "summary": "會員在「我的點數」頁分別查詢目前餘額與點數異動紀錄，並分頁閱讀歷史紀錄。",
+      "rules": ["會員只能查詢自己的點數", "異動紀錄每頁 20 筆，依時間新到舊排序"],
+      "screens": ["/member/points"],
+      "endpoints": ["GET /api/points/balance", "GET /api/points/transactions"],
+      "evidence": [
+        { "file": "web/src/pages/member/PointHistory.tsx", "symbol": "PointHistory", "role": "screen" },
+        { "file": "api/Points/PointsController.cs", "symbol": "PointsController.GetBalance", "role": "api" },
+        { "file": "api/Points/PointsController.cs", "symbol": "PointsController.GetTransactions", "role": "api" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "id": "member.profile",
+  "name": "會員資料",
+  "summary": "負責會員個人資料的查詢與修改。姓名、生日與地址各自驗證後儲存，修改完成會留下稽核紀錄。各項欄位有不同限制，會員以自己的身分進行操作。",
+  "data": [],
+  "dependsOn": [],
+  "towns": [
+    {
+      "id": "member.profile.edit",
+      "name": "個人資料修改",
+      "type": "operation",
+      "summary": "會員在「個人資料」頁送出姓名、生日或地址修改。系統檢查該欄位的限制，通過後儲存資料並留下稽核紀錄；不符合條件時回報錯誤。",
+      "rules": [
+        {
+          "id": "member.profile.audit",
+          "text": "姓名、生日與地址修改儲存後，會寫入對應欄位的稽核紀錄。",
+          "status": "confirmed",
+          "evidence": [
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateNameAsync",
+              "role": "logic"
+            },
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateBirthdayAsync",
+              "role": "logic"
+            },
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateAddressAsync",
+              "role": "logic"
+            }
+          ]
+        }
+      ],
+      "residents": [
+        {
+          "name": "姓名",
+          "rules": [
+            {
+              "id": "member.profile.name.length",
+              "text": "姓名長度需為 2–50 字。",
+              "status": "confirmed",
+              "evidence": [
+                {
+                  "file": "api/Member/Profile/MemberProfileService.cs",
+                  "symbol": "MemberProfileService.UpdateNameAsync",
+                  "role": "logic"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateNameAsync",
+              "role": "logic"
+            }
+          ]
+        },
+        {
+          "name": "生日",
+          "rules": [
+            {
+              "id": "member.profile.birthday.once",
+              "text": "生日只能修改一次。",
+              "status": "confirmed",
+              "evidence": [
+                {
+                  "file": "api/Member/Profile/MemberProfileService.cs",
+                  "symbol": "MemberProfileService.UpdateBirthdayAsync",
+                  "role": "logic"
+                }
+              ]
+            },
+            {
+              "id": "member.profile.birthday.date",
+              "text": "生日不可晚於伺服器的今天。",
+              "status": "confirmed",
+              "evidence": [
+                {
+                  "file": "api/Member/Profile/MemberProfileService.cs",
+                  "symbol": "MemberProfileService.UpdateBirthdayAsync",
+                  "role": "logic"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateBirthdayAsync",
+              "role": "logic"
+            }
+          ]
+        },
+        {
+          "name": "地址",
+          "rules": [
+            {
+              "id": "member.profile.address.zip",
+              "text": "郵遞區號必須與縣市相符。",
+              "status": "confirmed",
+              "evidence": [
+                {
+                  "file": "api/Member/Profile/MemberProfileService.cs",
+                  "symbol": "MemberProfileService.UpdateAddressAsync",
+                  "role": "logic"
+                }
+              ]
+            },
+            {
+              "id": "member.profile.address.length",
+              "text": "組合後的完整地址長度不得超過 200 字。",
+              "status": "confirmed",
+              "evidence": [
+                {
+                  "file": "api/Member/Profile/MemberProfileService.cs",
+                  "symbol": "MemberProfileService.UpdateAddressAsync",
+                  "role": "logic"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "file": "api/Member/Profile/MemberProfileService.cs",
+              "symbol": "MemberProfileService.UpdateAddressAsync",
+              "role": "logic"
+            }
+          ]
+        }
+      ],
+      "screens": [
+        "/member/profile"
+      ],
+      "endpoints": [
+        "GET /api/member/profile",
+        "PUT /api/member/profile/name",
+        "PUT /api/member/profile/birthday",
+        "PUT /api/member/profile/address"
+      ],
+      "evidence": [
+        {
+          "file": "web/src/pages/member/ProfileEdit.tsx",
+          "symbol": "ProfileEdit",
+          "role": "screen"
+        },
+        {
+          "file": "api/Member/Profile/MemberProfileController.cs",
+          "symbol": "MemberProfileController",
+          "role": "api"
+        },
+        {
+          "file": "api/Member/Profile/MemberProfileService.cs",
+          "symbol": "MemberProfileService",
+          "role": "logic"
+        }
+      ]
+    }
+  ]
+}

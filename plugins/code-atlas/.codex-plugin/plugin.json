@@ -1,0 +1,26 @@
+{
+  "name": "code-atlas",
+  "version": "1.0.0",
+  "description": "Analyze single or multiple Git repositories into Traditional Chinese business maps and importable atlas ZIPs, and update them from Git changes.",
+  "author": {
+    "name": "Skill Forge"
+  },
+  "skills": "./skills/",
+  "repository": "https://github.com/joyceowo/skill-forge",
+  "homepage": "https://github.com/joyceowo/skill-forge/tree/main/plugins/code-atlas",
+  "keywords": ["code-analysis", "business-logic", "documentation", "git", "atlas"],
+  "interface": {
+    "displayName": "Code Atlas",
+    "shortDescription": "將 Git 專案整理成商業邏輯地圖",
+    "longDescription": "分析單一 Git 或同一工作區的多個 Git 專案，以國家、城市、鄉鎮與鎮民整理繁體中文商業邏輯文件，保留可核對的程式證據，產生可匯入 viewer 的地圖 ZIP，並依各來源 Git 變更增量更新。",
+    "developerName": "Skill Forge",
+    "websiteURL": "https://github.com/joyceowo/skill-forge",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "使用 code-atlas 分析這個 Git 專案，建立包含商業邏輯的三層地圖 ZIP。",
+      "使用 code-atlas 整合這個工作區的多個 Git 專案，產生一份商業地圖 ZIP。",
+      "使用 code-atlas 依各來源 Git 變更更新既有 .atlas 文件，再匯出地圖 ZIP。"
+    ]
+  }
+}

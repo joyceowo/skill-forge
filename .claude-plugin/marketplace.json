@@ -1,0 +1,16 @@
+{
+  "name": "skill-forge",
+  "owner": {
+    "name": "Skill Forge"
+  },
+  "metadata": {
+    "description": "Shared skills for Codex and Claude Code."
+  },
+  "plugins": [
+    {
+      "name": "code-atlas",
+      "source": "./plugins/code-atlas",
+      "description": "Turn Git projects into business maps with countries, cities, towns, and importable ZIP packages."
+    }
+  ]
+}

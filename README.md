@@ -9,6 +9,34 @@ GitHub 儲存庫：[joyceowo/skill-forge](https://github.com/joyceowo/skill-forg
 | 外掛／技能 | 版本 | 用途 |
 | --- | --- | --- |
 | [sync-business-logic-docs](plugins/sync-business-logic-docs/README.md) | 1.0.0 | 從 C# 與 Git 歷史建立、稽核及增量同步業務邏輯 Markdown 文件。 |
+| [code-atlas](plugins/code-atlas/README.md) | 1.0.0 | 將單一或多個 Git 專案整理成三層商業地圖、鎮民規則文件與可匯入的地圖 ZIP。 |
+
+## Code Atlas 安裝與使用
+
+Code Atlas 的完整流程是 **Skill → 商業邏輯文件 → 地圖 ZIP → viewer 匯入 → 國家／城市／鄉鎮縮放**。此版本包含分析腳本、參考文件、離線 viewer 與 D3 授權；使用方式與 Python 套件需求見 [Code Atlas 說明](plugins/code-atlas/README.md)。
+
+登錄市集並安裝 Code Atlas：
+
+```powershell
+# Codex
+codex plugin marketplace add https://github.com/joyceowo/skill-forge.git --ref main
+codex plugin add code-atlas@skill-forge
+# Claude Code
+claude plugin marketplace add https://github.com/joyceowo/skill-forge.git
+claude plugin install code-atlas@skill-forge
+```
+
+從 GitHub 安裝必須等這個版本推送後才會取得；本機版本可先用以下方式載入（將路徑替換成自己的）：
+
+```powershell
+codex plugin marketplace add 'C:/path/to/skill-forge'
+codex plugin add code-atlas@skill-forge
+claude --plugin-dir 'C:/path/to/skill-forge/plugins/code-atlas'
+```
+
+在目標 Git 專案開啟新聊天後，請 Codex「使用 code-atlas 分析目前專案，產生商業邏輯文件並匯出地圖 ZIP」；Claude Code 使用 `/code-atlas:code-atlas` 加上相同要求。單一功能中的欄位或選項放在鎮民，商業流程、規則及程式證據是預設內容。
+
+更新時，Codex 先執行 `codex plugin marketplace upgrade skill-forge`，再執行 `codex plugin add code-atlas@skill-forge`；Claude Code 先執行 `claude plugin marketplace update skill-forge`，再執行 `claude plugin update code-atlas@skill-forge`。本機市集直接讀取來源目錄；GitHub 市集更新讀取已推送的版本。完成後重新開啟工作階段。
 
 ## 從 GitHub 安裝
 

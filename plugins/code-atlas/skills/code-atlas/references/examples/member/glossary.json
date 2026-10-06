@@ -1,0 +1,12 @@
+{
+  "terms": {
+    "Member": "會員",
+    "Profile": "會員資料",
+    "Tier": "會員等級",
+    "Point": "點數",
+    "Accrue": "累積",
+    "Redeem": "扣除",
+    "Expiry": "到期",
+    "Audit Log": "稽核紀錄"
+  }
+}
